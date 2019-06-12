@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>snapp scoring</title>
+</head>
+<body>
+
+{% block content %}
+
+    <h2>Enter request latitude and longitude.</h2>
+
+    <form method="POST" action="{% url 'matched' %}">
+        latitude:<br>
+        <input type="text" name="latitude" value="35">
+        <br>
+        longitude:<br>
+        <input type="text" name="longitude" value="50">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
+
+{% endblock %}
+
+</body>
+</html>
