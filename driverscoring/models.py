@@ -58,13 +58,13 @@ class Driver(models.Model):
                 score_dict[score] = driver.pk
                 score_list.append({score:driver.id})
         for i in sorted (score_dict) :
-            drivers.append(Driver.objects.filter(pk=score_dict[i]).as_json())
+            drivers.append(Driver.objects.filter(pk=score_dict[i])[0].as_json())
         return drivers
 
 
     def as_json(self):
         return dict(
-            latitude=self.latitude,
-            longitude=self.longitude,
-            rating=self.rating,
+            latitude=float(self.latitude),
+            longitude=float(self.longitude),
+            rating=float(self.rating),
             last_trip_time=self.last_trip_time.isoformat())
