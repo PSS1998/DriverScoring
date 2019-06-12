@@ -12,6 +12,7 @@ from .models import Driver
 def index(request):
     context = {}
     return render(request, 'index.html', context)
+    
 
 @csrf_exempt
 @require_POST
@@ -32,5 +33,5 @@ def matched(request):
             Driver.create(left, right, top, bottom)
         drivers = Driver.match_driver(latitude, longitude)
 
-        context = {'message': json.dumps(drivers) }
+        context = {'drivers': drivers }
         return render(request, 'matched.html', context)

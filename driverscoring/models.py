@@ -34,14 +34,11 @@ class Driver(models.Model):
     @classmethod
     def match_driver(cls, latitude, longitude):
         # find all the driveres near request
-        id_list = []
-        score_list = []
         score_dict = {}
         drivers = []
         for driver in Driver.objects.all():
             if(abs(float(driver.latitude) - latitude) < 0.02 and abs(float(driver.longitude) - longitude) < 0.02):
                 score = 0
-                id_list.append(driver.id)
                 # convert decimal degrees to radians
                 lon1, lat1, lon2, lat2 = map(radians, [float(driver.longitude), float(driver.latitude), longitude, latitude])
                 # haversine formula
@@ -54,11 +51,10 @@ class Driver(models.Model):
                 score = distance / float(driver.rating)
                 diff = datetime.now() - driver.last_trip_time
                 diff_hours = diff.seconds / 3600
-                score += diff_hours*25
-                score_dict[score] = driver.pk
-                score_list.append({score:driver.id})
+                score -= diff_hours*20
+                score_dict[score] = (driver.pk, distance)
         for i in sorted (score_dict) :
-            drivers.append(Driver.objects.filter(pk=score_dict[i])[0].as_json())
+            drivers.append((Driver.objects.filter(pk=score_dict[i][0])[0].as_json(), score_dict[i][1]))
         return drivers
 
 
@@ -67,4 +63,4 @@ class Driver(models.Model):
             latitude=float(self.latitude),
             longitude=float(self.longitude),
             rating=float(self.rating),
-            last_trip_time=self.last_trip_time.isoformat())
+            last_trip_time=self.last_trip_time.strftime("%Y/%m/%d, %H:%M:%S"))

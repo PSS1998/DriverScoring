@@ -2,12 +2,59 @@
 <html>
 <head>
     <title>snapp scoring</title>
+
+    <style>
+
+        #drivers {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        #drivers td, #drivers th {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: center;
+        }
+
+        #drivers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #drivers tr:hover {background-color: #ddd;}
+
+        #drivers th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          background-color: #4CAF50;
+          color: white;
+        }
+
+    </style>
+
 </head>
 <body>
 
 {% block content %}
 
-  {{message}}
+  <!-- {{drivers}} -->
+
+  <table id="drivers">
+      <tr>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Rating</th>
+          <th>Last trip time</th>
+          <th>Distance</th>
+      </tr>
+  {% for driver in drivers %}
+      <tr>
+          <td>{{driver.0.latitude}}</td>
+          <td>{{driver.0.longitude}}</td>
+          <td>{{driver.0.rating}}</td>
+          <td>{{driver.0.last_trip_time}}</td>
+          <td>{{driver.1}}</td>
+      </tr>
+  {% endfor %}
+  </table>
 
 {% endblock %}
 
